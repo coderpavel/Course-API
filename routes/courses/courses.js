@@ -13,8 +13,20 @@ router.post('/', async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let course = new Course({ name: req.body.name });
-    course = await course.save();
+    const genre = await Genre.findById(req.body.genreId);
+    if (!genre) return res.status(400).send('Invalid genre');
+
+    let course = new Course({ 
+        name: req.body.name,
+        genre: {
+            _id: genre._id,
+            name: genre.name
+        },
+        numberInStock: req.body.numberInStock,
+        dailyPurcahse: req.body.dailyPurcahse
+     });
+    
+     course = await course.save();
 
     res.send(course);
 });
