@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
             name: genre.name
         },
         numberInStock: req.body.numberInStock,
-        dailyPurcahse: req.body.dailyPurcahse
+        dailyPurchase: req.body.dailyPurchase
      });
     
      course = await course.save();

@@ -19,7 +19,7 @@ const courseSchema = new mongoose.Schema({
         min: 0,
         max: 250
     },
-    dailyPurcahse: {
+    dailyRentalRate: {
         type: Number,
         required: true,
         min: 0,
@@ -35,7 +35,7 @@ function validateCourse(course) {
         name: Joi.string().min(3).max().required(),
         genreId: Joi.string().required(),
         numberInStock: Joi.number().min(0).required(),
-        dailyRenatalRate: Joi.number().min(0).required()
+        dailyRentalRate: Joi.number().min(0).required()
     }
     
     return Joi.validate(course, schema);
