@@ -2,8 +2,11 @@ const { Rental, validate } = require('../../models/rental/rental');
 const { Course } = require('../../models/course/course');
 const { Customer } = require('../../models/customer');
 const mongoose = require('mongoose');
+const Fawn = require('fawn');
 const express = require('express');
 const router = express.Router();
+
+Fawn.init(mongoose);
 
 router.get('/', async (req, res) => {
     const rentals = await Rental.find().sort('-dateOut');
@@ -34,9 +37,19 @@ router.post('/', async (req, res) => {
             dailyRentalRate: course.dailyRentalRate
         }
     });
-    rental = await rental.save();
 
-    course.numberInStock--;
-    course.save();
-    res.send(rental);
+    /*
+        rental = await rental.save();
+        course.numberInStock--;
+        course.save();
+    ************ Use Fawn for two phase communication ****************/
+
+    try {
+        new Fawn.Task()
+            .save('rentals', rental)
+            .update('courses', { _id: course._id }, { $inc: { numberInStock: -1 } })
+            .run();
+    } catch (error) {
+        res.status(500).send('Smth failed.');
+    }
 });
