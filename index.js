@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const bodyParser = require('body-parser');
+const users = require('./routes/users/users');
 const courses = require('./routes/courses/courses');
 const home = require('./routes/home/home');
 const customers = require('./routes/customers/customers');
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 app.use('/', home);
 app.use('/api/courses', courses);
 app.use('/api/customers', customers);
+app.use('/api/users', users);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('Listening on port: ', port));
