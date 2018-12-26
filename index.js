@@ -8,8 +8,10 @@ const customers = require('./routes/customers/customers');
 const express = require('express');
 const app = express();
 
-mongoose.connect('mongodb://localhost/coursesApi', { useNewUrlParser: true })
-    .then(() => console.log('Connected to MongoDB'))
+mongoose.connect('mongodb://localhost/coursesApi', {
+    useCreateIndex: true,
+    useNewUrlParser: true
+}).then(() => console.log('Connected to MongoDB'))
     .catch(err => console.log('Could not connect to MongoDB'));
 
 // parse application/x-www-form-urlencoded
